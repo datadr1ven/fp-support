@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Verification - FocalPoints</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: #ffffff;
+      text-align: center;
+      background: url('background.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+    
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.4); /* Dark overlay for readability */
+      backdrop-filter: blur(8px);
+    }
+    
+    .logo {
+      width: 120px;
+      height: auto;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      font-size: 28px;
+      margin: 20px 0;
+    }
+    
+    p {
+      font-size: 18px;
+      max-width: 600px;
+      margin: 10px 0;
+    }
+    
+    a.open-app {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 24px;
+      background: #6e48aa;
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    
+    a.open-app:hover {
+      background: #8a65cc;
+    }
+    
+    .support-link {
+      margin-top: 40px;
+      font-size: 14px;
+    }
+    
+    .support-link a {
+      color: #d4b3ff;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="logo.png" alt="FocalPoints Logo" class="logo" />
+    
+    <h1 id="title">Verifying your email...</h1>
+    <p id="message">Please wait while we confirm your account.</p>
+    
+    <script>
+      // Parse parameters from the URL hash fragment (e.g., #access_token=...&type=signup&error_description=...)
+      const hash = window.location.hash.substring(1); // Remove the leading '#'
+      const params = new URLSearchParams(hash);
+      
+      const type = params.get('type');
+      const error = params.get('error') || params.get('error_description'); // error_description is common for some flows
+      const accessToken = params.get('access_token');
+      
+      const titleEl = document.getElementById('title');
+      const messageEl = document.getElementById('message');
+      
+      if (type === 'signup' && accessToken && !error) {
+        titleEl.textContent = 'Success! Your email is verified ✨';
+        messageEl.innerHTML = 'You can now close this tab and return to the FocalPoints app to start exploring your cosmic insights.';
+        // Add button to open the app
+        const button = document.createElement('a');
+        button.href = 'focalpoints://';
+        button.className = 'open-app';
+        button.textContent = 'Open FocalPoints App';
+        messageEl.insertAdjacentElement('afterend', button);
+      } else if (type === 'recovery') {
+        titleEl.textContent = 'Password Reset Link Valid';
+        messageEl.textContent = 'You can now return to the app to reset your password.';
+        const button = document.createElement('a');
+        button.href = 'focalpoints://';
+        button.className = 'open-app';
+        button.textContent = 'Open FocalPoints App';
+        messageEl.insertAdjacentElement('afterend', button);
+      } else if (error) {
+        titleEl.textContent = 'Verification Failed';
+        messageEl.innerHTML = `An error occurred: <strong>${error}</strong>.<br>Please try the link again or request a new verification email.`;
+      } else {
+        titleEl.textContent = 'Invalid Link';
+        messageEl.textContent = 'This verification link is not valid. Please check your email or contact support.';
+      }
+      
+      // Always show support link
+      const supportDiv = document.createElement('div');
+      supportDiv.className = 'support-link';
+      supportDiv.innerHTML = 'Need help? Email <a href="mailto:support@scenicminddigital.site.co">support@scenicminddigital.site.co</a>';
+      document.querySelector('.container').appendChild(supportDiv);
+    </script>
+  </div>
+</body>
+</html>
