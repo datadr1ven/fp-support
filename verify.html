@@ -57,7 +57,7 @@
     }
     
     a.open-app:hover {
-      background: #8a65cc;
+      background: #123962;
     }
     
     .support-link {
@@ -95,7 +95,7 @@
         messageEl.innerHTML = 'You can now close this tab and return to the FocalPoints app to start exploring your cosmic insights.';
         // Add button to open the app
         const button = document.createElement('a');
-        button.href = 'focalpoints://';
+        button.href = 'https://focal-points-portal.vercel.app';
         button.className = 'open-app';
         button.textContent = 'Open FocalPoints App';
         messageEl.insertAdjacentElement('afterend', button);
